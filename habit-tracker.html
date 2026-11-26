@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Әдеттер трекері</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eef3f2;--sf:#fff;--tx:#12302b;--mu:#5f7a75;--ln:#d5e1de;--ac:#0f766e;--ac2:#14b8a6;--em:#e3ece9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0d1a18;--sf:#142522;--tx:#e6f2ef;--mu:#8fb0aa;--ln:#25403b;--ac:#2dd4bf;--ac2:#0f9488;--em:#1c3430}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0d1a18;--sf:#142522;--tx:#e6f2ef;--mu:#8fb0aa;--ln:#25403b;--ac:#2dd4bf;--ac2:#0f9488;--em:#1c3430}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 15px/1.5 Manrope,system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:20px 14px 48px}
+h1{font-size:28px;font-weight:800;margin:0 0 4px}
+h2{font-size:18px;font-weight:800;margin:0}
+p.sub{color:var(--mu);margin:0 0 18px}
+section{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:16px;margin-bottom:16px}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.nav{display:flex;align-items:center;gap:6px}
+.nav span{min-width:130px;text-align:center;font-weight:600;font-size:14px}
+button{font:inherit;cursor:pointer;border:1px solid var(--ln);background:var(--em);color:var(--tx);border-radius:8px;padding:6px 11px}
+button:focus-visible,input:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.sc{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th{font-weight:600;color:var(--mu);font-size:12px;padding:4px}
+th.today{color:var(--ac)}
+td{padding:4px;text-align:center;border-top:1px solid var(--ln)}
+td.n{text-align:left;font-weight:600;min-width:120px}
+td.c{font-size:12px;color:var(--mu);white-space:nowrap}
+.cb{width:34px;height:34px;border-radius:9px;border:2px solid var(--ln);background:transparent;padding:0;color:#fff;font-weight:800;font-size:16px}
+.cb.on{background:var(--ac2);border-color:var(--ac2)}
+.cb:disabled{opacity:.35;cursor:default}
+.x{border:0;background:none;color:var(--mu);padding:2px 6px;margin-left:4px}
+.add{display:flex;gap:8px;margin-top:12px}
+.add input{flex:1;min-width:0;font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--tx)}
+.add button{background:var(--ac2);color:#fff;border-color:var(--ac2);font-weight:600}
+.ch{margin-top:14px}
+.ch h3{font-size:13px;font-weight:600;color:var(--mu);margin:0 0 4px}
+svg{display:block;width:100%;height:auto}
+.kp{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.kp div{flex:1;min-width:110px;background:var(--em);border-radius:10px;padding:8px 12px}
+.kp b{display:block;font-size:22px;font-weight:800}
+.kp small{color:var(--mu)}
+.nv{width:56px;margin-top:3px;font:inherit;font-size:12px;text-align:center;padding:3px;border-radius:6px;border:1px solid var(--ln);background:var(--bg);color:var(--tx)}.st{font-size:12px;color:var(--mu);font-weight:400;margin-left:4px}.add select{font:inherit;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);padding:6px}.add{flex-wrap:wrap}.add input.u{flex:0 0 110px}details{margin-top:14px}summary{cursor:pointer;color:var(--mu)}textarea{width:100%;height:90px;margin:8px 0;font:12px monospace;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px}.empty{color:var(--mu);padding:10px 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Әдеттер трекері</h1>
+<p class="sub">Күн сайын орындалған әдетті белгіле, прогресті графиктен көр.</p>
+
+<section id="week">
+  <div class="hd"><h2>Апта</h2>
+    <div class="nav"><button id="wp" aria-label="Алдыңғы апта">‹</button><span id="wl"></span><button id="wn" aria-label="Келесі апта">›</button></div></div>
+  <div class="sc" id="grid"></div>
+  <div class="add"><input id="ni" placeholder="Жаңа әдет (эмодзи қоса аласың)" maxlength="40"><input id="nu" class="u" placeholder="Сан бірлігі: бет" maxlength="10"><select id="ng" aria-label="Аптадағы мақсат"><option value="7">7 / апта</option><option value="6">6 / апта</option><option value="5">5 / апта</option><option value="4">4 / апта</option><option value="3">3 / апта</option><option value="2">2 / апта</option><option value="1">1 / апта</option></select><button id="nb">Қосу</button></div>
+  <div class="kp" id="wk" style="margin-top:14px"></div>
+  <div class="ch"><h3>Аптаның графигі: күн сайынғы орындалу, %</h3><div id="wc"></div></div>
+</section>
+
+<section id="month">
+  <div class="hd"><h2>Ай</h2>
+    <div class="nav"><button id="mp" aria-label="Алдыңғы ай">‹</button><span id="ml"></span><button id="mn" aria-label="Келесі ай">›</button></div></div>
+  <div class="kp" id="mk"></div>
+  <div class="ch"><h3>Айдың графигі: күн сайынғы орындалу, %</h3><div id="mc"></div></div>
+</section>
+
+<section id="all">
+  <div class="hd"><h2>Жалпы нәтиже</h2></div>
+  <div class="kp" id="ak"></div>
+  <div class="ch"><h3>Барлық айлар бойынша орташа орындалу, %</h3><div id="ac"></div></div>
+  <div class="ch"><h3>Белсенділік картасы: соңғы 20 апта (түсі қанық болса, көп орындалған)</h3><div class="sc" id="hm"></div></div>
+  <div class="ch"><h3>Әр әдет бойынша барлық уақыттағы орындалу, күн</h3><div id="hc"></div></div>
+</section>
+<details><summary>Деректі сақтау және көшіру</summary>
+  <textarea id="jt" aria-label="Деректер"></textarea>
+  <button id="je">Деректі көрсету және көшіру</button> <button id="ji">Осы мәтіннен жүктеу</button> <span id="jm" class="st"></span></details>
+</main>
+<script>
+var KEY="habits-v1",D=["Дс","Сс","Ср","Бс","Жм","Сн","Жс"],M=["Қаңтар","Ақпан","Наурыз","Сәуір","Мамыр","Маусым","Шілде","Тамыз","Қыркүйек","Қазан","Қараша","Желтоқсан"];
+var S={habits:[{id:1,name:"💧 Су ішу",unit:"мл",goal:7},{id:2,name:"🏃 Спорт",unit:"",goal:4},{id:3,name:"📖 Кітап оқу",unit:"бет",goal:5}],done:{},vals:{},nid:4};
+try{var r=localStorage.getItem(KEY);if(r)S=JSON.parse(r)}catch(e){}
+S.vals=S.vals||{};
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function ds(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+var today=new Date();today.setHours(0,0,0,0);var TS=ds(today);
+function monday(d){var x=new Date(d);x.setDate(x.getDate()-((x.getDay()+6)%7));return x}
+var wk=monday(today),mo=new Date(today.getFullYear(),today.getMonth(),1);
+function ids(){return S.habits.map(function(h){return h.id})}
+function cnt(s){var a=S.done[s]||[],v=ids();return a.filter(function(i){return v.indexOf(i)>-1}).length}
+function pct(s){var n=S.habits.length;return n?Math.round(cnt(s)/n*100):0}
+function bars(L,V,o){o=o||{};var n=L.length,W=600,H=170,pl=28,pb=22,pt=14,w=(W-pl)/n,bw=Math.min(w*.7,46),mx=o.max||100,s='<svg viewBox="0 0 '+W+' '+H+'" role="img">';
+ [0,.5,1].forEach(function(f){var y=pt+(H-pt-pb)*(1-f);s+='<line x1="'+pl+'" x2="'+W+'" y1="'+y+'" y2="'+y+'" stroke="var(--ln)"/><text x="0" y="'+(y+4)+'" font-size="10" fill="var(--mu)">'+Math.round(mx*f)+'</text>'});
+ V.forEach(function(v,i){var x=pl+i*w+(w-bw)/2,h=v==null?0:(H-pt-pb)*v/mx,y=H-pb-h;
+  if(v!=null)s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+Math.max(h,v>0?2:0)+'" rx="3" fill="var(--ac2)"/>';
+  if(o.val&&v!=null)s+='<text x="'+(x+bw/2)+'" y="'+(y-3)+'" font-size="10" text-anchor="middle" fill="var(--tx)">'+v+'</text>';
+  if(n<=12||i%5==0||i==n-1)s+='<text x="'+(x+bw/2)+'" y="'+(H-6)+'" font-size="10" text-anchor="middle" fill="var(--mu)">'+L[i]+'</text>'});
+ return s+'</svg>'}
+function hb(L,V,mx){var s='<svg viewBox="0 0 600 '+(L.length*28+4)+'">';L.forEach(function(l,i){var y=i*28+2,w=mx?V[i]/mx*400:0;
+ s+='<text x="0" y="'+(y+16)+'" font-size="12" fill="var(--tx)">'+l.slice(0,16)+'</text><rect x="130" y="'+y+'" width="'+Math.max(w,V[i]?2:0)+'" height="20" rx="4" fill="var(--ac2)"/><text x="'+(136+w)+'" y="'+(y+15)+'" font-size="12" fill="var(--mu)">'+V[i]+'</text>'});return s+'</svg>'}
+function esc(t){return t.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function has(s,id){return (S.done[s]||[]).indexOf(id)>-1}
+function val(s,id){return +((S.vals[s]||{})[id])||0}
+function streak(id){var d=new Date(today),c=0;if(!has(ds(d),id))d.setDate(d.getDate()-1);while(has(ds(d),id)){c++;d.setDate(d.getDate()-1)}return c}
+function units(from,to){var o={};S.habits.forEach(function(h){if(!h.unit)return;var t=0;for(var d=new Date(from);d<=to;d.setDate(d.getDate()+1))t+=val(ds(d),h.id);if(t)o[h.id]=t});return o}
+function ukp(o){return S.habits.filter(function(h){return o[h.id]}).map(function(h){return '<div><b>'+o[h.id]+'</b><small>'+esc(h.unit)+' · '+esc(h.name)+'</small></div>'}).join("")}
+function rWeek(){
+ var days=[];for(var i=0;i<7;i++){var d=new Date(wk);d.setDate(d.getDate()+i);days.push(d)}
+ $("wl").textContent=days[0].getDate()+" "+M[days[0].getMonth()].slice(0,3)+" – "+days[6].getDate()+" "+M[days[6].getMonth()].slice(0,3)+" "+days[6].getFullYear();
+ if(!S.habits.length){$("grid").innerHTML='<div class="empty">Әдеттер жоқ. Төменнен біріншісін қос.</div>';$("wc").innerHTML="";$("wk").innerHTML="";return}
+ var h='<table><tr><th></th>'+days.map(function(d,i){return'<th class="'+(ds(d)==TS?"today":"")+'">'+D[i]+'<br>'+d.getDate()+'</th>'}).join("")+'<th>Апта</th></tr>';
+ var wm=0,gm=0;
+ S.habits.forEach(function(x){var c=0,g=x.goal||7,st=streak(x.id),sm=0;h+='<tr><td class="n">'+esc(x.name)+(st?'<span class="st">🔥 '+st+'</span>':'')+'<button class="x" data-del="'+x.id+'" aria-label="Жою">✕</button></td>';
+  days.forEach(function(d){var s=ds(d),on=has(s,x.id);if(on)c++;sm+=val(s,x.id);
+   h+='<td><button class="cb'+(on?" on":"")+'" data-d="'+s+'" data-h="'+x.id+'"'+(s>TS?" disabled":"")+' aria-pressed="'+on+'" aria-label="'+esc(x.name)+' '+s+'">'+(on?"✓":"")+'</button>'+(x.unit&&s<=TS?'<br><input class="nv" type="number" min="0" inputmode="decimal" placeholder="'+esc(x.unit)+'" data-d="'+s+'" data-h="'+x.id+'" value="'+(val(s,x.id)||"")+'">':"")+'</td>'});
+  wm+=c;if(c>=g)gm++;
+  h+='<td class="c">'+c+" / "+g+(c>=g?" ✓":"")+(sm?'<br>Σ '+sm+' '+esc(x.unit):"")+"</td></tr>"});
+ $("wk").innerHTML='<div><b>'+wm+'</b><small>апта бойынша белгі</small></div><div><b>'+gm+' / '+S.habits.length+'</b><small>мақсатқа жеткен әдет</small></div>'+ukp(units(days[0],days[6]));
+ $("grid").innerHTML=h+'</table>';
+ $("wc").innerHTML=bars(D,days.map(function(d){var s=ds(d);return s>TS?null:pct(s)}),{val:1})}
+function rMonth(){
+ var y=mo.getFullYear(),m=mo.getMonth(),n=new Date(y,m+1,0).getDate(),L=[],V=[],sum=0,k=0,tot=0;
+ $("ml").textContent=M[m]+" "+y;
+ for(var i=1;i<=n;i++){var s=ds(new Date(y,m,i));L.push(i);if(s>TS)V.push(null);else{var p=pct(s);V.push(p);sum+=p;k++;tot+=cnt(s)}}
+ $("mk").innerHTML='<div><b>'+(k?Math.round(sum/k):0)+'%</b><small>орташа орындалу</small></div><div><b>'+tot+'</b><small>белгіленген әдет</small></div><div><b>'+V.filter(function(v){return v===100}).length+'</b><small>толық күн</small></div>';
+ $("mk").innerHTML+=ukp(units(new Date(y,m,1),new Date(y,m,n)));$("mc").innerHTML=bars(L,V)}
+function rAll(){
+ var keys=Object.keys(S.done).filter(function(s){return cnt(s)>0}).sort(),tot=0,full=0;
+ if(!keys.length){$("ak").innerHTML="";$("ac").innerHTML='<div class="empty">Әзірге белгі жоқ. Жоғарыдағы кестеден бастаңыз.</div>';$("hc").innerHTML="";return}
+ var first=new Date(keys[0]+"T00:00:00"),cur=new Date(first.getFullYear(),first.getMonth(),1),L=[],V=[];
+ while(cur<=today){var y=cur.getFullYear(),m=cur.getMonth(),n=new Date(y,m+1,0).getDate(),sum=0,k=0;
+  for(var i=1;i<=n;i++){var s=ds(new Date(y,m,i));if(s<=TS&&s>=ds(first)){sum+=pct(s);k++}}
+  L.push(M[m].slice(0,3)+(L.length&&m>0?"":" "+String(y).slice(2)));V.push(k?Math.round(sum/k):0);cur=new Date(y,m+1,1)}
+ keys.forEach(function(s){tot+=cnt(s);if(pct(s)===100)full++});
+ var all=Math.round(V.reduce(function(a,b){return a+b},0)/V.length);
+ $("ak").innerHTML='<div><b>'+tot+'</b><small>барлық белгі</small></div><div><b>'+keys.length+'</b><small>белсенді күн</small></div><div><b>'+full+'</b><small>толық күн</small></div><div><b>'+all+'%</b><small>айлардың орташасы</small></div>';
+ $("ac").innerHTML=bars(L,V,{val:V.length<=8});
+ var hv=S.habits.map(function(h){return keys.filter(function(s){return S.done[s].indexOf(h.id)>-1}).length});
+ $("hc").innerHTML=hb(S.habits.map(function(h){return h.name}),hv,Math.max.apply(null,hv.concat(1)))}
+function heat(){var st=monday(today);st.setDate(st.getDate()-133);var s='<svg viewBox="0 0 '+(20*17)+' 119" style="min-width:340px">';
+ for(var w=0;w<20;w++)for(var d=0;d<7;d++){var x=new Date(st);x.setDate(x.getDate()+w*7+d);var k=ds(x);if(k>TS)continue;var p=pct(k);
+  s+='<rect x="'+w*17+'" y="'+d*17+'" width="14" height="14" rx="3" fill="'+(p?'var(--ac2)':'var(--em)')+'" fill-opacity="'+(p?.25+.75*p/100:1)+'"><title>'+k+': '+p+'%</title></rect>'}
+ $("hm").innerHTML=s+'</svg>'}
+function all(){heat();rWeek();rMonth();rAll()}
+$("grid").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;
+ if(b.dataset.del){if(confirm("Осы әдетті жою керек пе?")){S.habits=S.habits.filter(function(h){return h.id!=b.dataset.del});save();all()}return}
+ if(b.dataset.d){var s=b.dataset.d,id=+b.dataset.h,a=S.done[s]||(S.done[s]=[]),i=a.indexOf(id);if(i>-1)a.splice(i,1);else a.push(id);save();all()}});
+$("grid").addEventListener("change",function(e){var t=e.target;if(!t.classList.contains("nv"))return;var s=t.dataset.d,id=+t.dataset.h,v=Math.max(0,+t.value||0);(S.vals[s]=S.vals[s]||{})[id]=v;var a=S.done[s]||(S.done[s]=[]),i=a.indexOf(id);if(v>0&&i<0)a.push(id);if(v==0&&i>-1)a.splice(i,1);save();all()});
+function add(){var v=$("ni").value.trim();if(!v)return;S.habits.push({id:S.nid++,name:v,unit:$("nu").value.trim(),goal:+$("ng").value});$("ni").value="";$("nu").value="";save();all()}
+$("nb").onclick=add;$("ni").onkeydown=function(e){if(e.key==="Enter")add()};
+$("wp").onclick=function(){wk.setDate(wk.getDate()-7);rWeek()};$("wn").onclick=function(){wk.setDate(wk.getDate()+7);rWeek()};
+$("mp").onclick=function(){mo=new Date(mo.getFullYear(),mo.getMonth()-1,1);rMonth()};$("mn").onclick=function(){mo=new Date(mo.getFullYear(),mo.getMonth()+1,1);rMonth()};
+$("je").onclick=function(){$("jt").value=JSON.stringify(S);$("jt").select();try{navigator.clipboard.writeText($("jt").value)}catch(e){}$("jm").textContent="Көшірілді. Басқа құрылғыда осы мәтінді қойып жүктеңіз."};
+$("ji").onclick=function(){try{var o=JSON.parse($("jt").value);if(!o.habits)throw 0;S=o;S.vals=S.vals||{};save();all();$("jm").textContent="Жүктелді."}catch(e){$("jm").textContent="Мәтін дұрыс емес."}};
+all();
+</script>
+</body>
+</html>
